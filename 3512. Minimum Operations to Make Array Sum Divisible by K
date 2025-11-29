@@ -3,19 +3,9 @@ from typing import List
 
 class Solution:
     def minOperations(self, nums: List[int], k: int) -> int:
-        """
-        Calculate the minimum number of operations required to make
-        the sum of nums divisible by k.
-        
-        Each operation decreases any element by 1.
-        
-        Logic:
-        - Compute total sum of nums.
-        - Find remainder when divided by k.
-        - That remainder is the number of operations needed.
-        
-        Time Complexity: O(n)
-        Space Complexity: O(1)
-        """
+        # Calculate the total sum of the array
         total_sum = sum(nums)
+        
+        # The remainder tells us how many times we need to subtract 1
+        # Each operation reduces the sum by 1
         return total_sum % k
