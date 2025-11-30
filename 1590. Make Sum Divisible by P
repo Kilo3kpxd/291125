@@ -1,44 +1,28 @@
 
-# Define the Solution class as required by LeetCode
 class Solution:
     def minSubarray(self, nums, p):
-        """
-        nums: List[int] -> The array of numbers
-        p: int -> The divisor
-        Returns: int -> Minimum length of subarray to remove so that remaining sum is divisible by p
-        """
+        total_sum = sum(nums)
+        remainder = total_sum % p
 
-        # Step 1: Calculate total sum of array
-        total_sum = sum(nums)  # sum() adds all elements in nums
-        remainder = total_sum % p  # Find remainder when divided by p
-
-        # If remainder is 0, array sum is already divisible by p
+        # If already divisible, no removal needed
         if remainder == 0:
             return 0
 
-        # Dictionary to store prefix_sum % p and its index
-        prefix_map = {0: -1}  # Initialize with 0 at index -1 for edge cases
-        prefix_sum = 0  # Running sum of elements
-        min_length = len(nums)  # Start with max possible length
+        prefix_map = {0: -1}  # prefix_mod -> index
+        prefix_sum = 0
+        min_length = len(nums)
 
-        # Step 2: Traverse the array
         for i, num in enumerate(nums):
-            prefix_sum += num  # Add current number to prefix_sum
-            current_mod = prefix_sum % p  # Current prefix sum modulo p
+            prefix_sum += num
+            current_mod = prefix_sum % p
 
-            # We want to find if there exists a prefix such that:
-            # (current_mod - remainder) % p exists in prefix_map
+            # Find target mod that would fix the remainder
             target = (current_mod - remainder) % p
 
-            # If target exists, we found a subarray to remove
             if target in prefix_map:
-                # Calculate length of subarray
-                length = i - prefix_map[target]
-                # Update minimum length
-                min_length = min(min_length, length)
+                min_length = min(min_length, i - prefix_map[target])
 
-            # Store current_mod in map with index
+            # Update prefix_map with current_mod
             prefix_map[current_mod] = i
 
-        # If min_length is still full array length, return -1 (not possible)
         return min_length if min_length < len(nums) else -1
