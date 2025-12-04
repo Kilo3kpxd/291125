@@ -1,0 +1,20 @@
+A. Two‑pointer trim + C‑optimized str.count (fast & simple)
+This avoids creating a new substring and minimizes Python‑level loops.
+
+
+class Solution:
+    def countCollisions(self, s: str) -> int:
+        n = len(s)
+        i = 0
+        while i < n and s[i] == 'L':  # skip safe L's on the left
+            i += 1
+
+        j = n - 1
+        while j >= i and s[j] == 'R':  # skip safe R's on the right
+            j -= 1
+
+        if i > j:
+            return 0
+
+        # collisions = middle length - count('S') in the middle
+        return (j - i + 1) - s.count('S', i, j + 1)
