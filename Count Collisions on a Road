@@ -1,19 +1,21 @@
-A. Two‑pointer trim + C‑optimized str.count (fast & simple)
-This avoids creating a new substring and minimizes Python‑level loops.
+This version uses only built‑in string operations (C-optimized) and fits LeetCode’s required class signature.
 
 class Solution:
     def countCollisions(self, s: str) -> int:
-        n = len(s)
+        # Skip safe 'L' cars on the left
         i = 0
-        while i < n and s[i] == 'L':  # skip safe L's on the left
+        n = len(s)
+        while i < n and s[i] == 'L':
             i += 1
 
+        # Skip safe 'R' cars on the right
         j = n - 1
-        while j >= i and s[j] == 'R':  # skip safe R's on the right
+        while j >= i and s[j] == 'R':
             j -= 1
 
+        # If the middle is empty, no collisions
         if i > j:
             return 0
 
-        # collisions = middle length - count('S') in the middle
+        # Collisions = middle length - count of 'S' in the middle
         return (j - i + 1) - s.count('S', i, j + 1)
